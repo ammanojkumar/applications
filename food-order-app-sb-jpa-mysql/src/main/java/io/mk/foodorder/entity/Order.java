@@ -1,4 +1,4 @@
-package io.mk.jpa.entity;
+package io.mk.foodorder.entity;
 
 import java.util.Date;
 import java.util.Set;
@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import io.mk.foodorder.model.OrderStatus;
 
 @Entity
 @Table(name = "Order_tbl")
@@ -29,9 +31,11 @@ public class Order {
 
 	private Integer totalAmount;
 
-	private Integer cust_id;
+	private Integer customerId;
 
-	private Integer supp_id;
+	private Integer supplierId;
+
+	private OrderStatus orderStatus;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<OrderItem> orderItem;
@@ -76,20 +80,20 @@ public class Order {
 		this.totalAmount = totalAmount;
 	}
 
-	public Integer getCust_id() {
-		return cust_id;
+	public Integer getCustomerId() {
+		return customerId;
 	}
 
-	public void setCust_id(Integer cust_id) {
-		this.cust_id = cust_id;
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
 	}
 
-	public Integer getSupp_id() {
-		return supp_id;
+	public Integer getSupplierId() {
+		return supplierId;
 	}
 
-	public void setSupp_id(Integer supp_id) {
-		this.supp_id = supp_id;
+	public void setSupplierId(Integer supplierId) {
+		this.supplierId = supplierId;
 	}
 
 	public Set<OrderItem> getOrderItem() {
@@ -98,6 +102,14 @@ public class Order {
 
 	public void setOrderItem(Set<OrderItem> orderItem) {
 		this.orderItem = orderItem;
+	}
+
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 
 }

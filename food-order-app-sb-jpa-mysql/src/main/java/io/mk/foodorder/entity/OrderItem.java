@@ -1,4 +1,4 @@
-package io.mk.jpa.entity;
+package io.mk.foodorder.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

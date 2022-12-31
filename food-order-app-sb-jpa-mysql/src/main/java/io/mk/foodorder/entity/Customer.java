@@ -1,4 +1,4 @@
-package io.mk.jpa.entity;
+package io.mk.foodorder.entity;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
