@@ -1,0 +1,196 @@
+{
+	"info": {
+		"_postman_id": "0d16b83d-5836-49ec-b0a6-5a8e102cc781",
+		"name": "InsuranceMicroservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Insurance service1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "2",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8091/app1insurance/BMW/A8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8091",
+					"path": [
+						"app1insurance",
+						"BMW",
+						"A8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insurance service2",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "1",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8092/app2insurance/BMW/A2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8092",
+					"path": [
+						"app2insurance",
+						"BMW",
+						"A2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gateway Insurance service1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYWEiLCJleHAiOjE2NzA3Mzg3MTAsImlhdCI6MTY3MDczODQxMH0.n-0-cwVCO1ad_k7YGFpzIp-aFrPd2KaUsvgpmUAKjWDm8MrPUS91QTLGBOmyT7zaCIvD1IJPUJGnJl21H7MNdw",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8040/app1insurance/BMW/A1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8040",
+					"path": [
+						"app1insurance",
+						"BMW",
+						"A1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gateway Insurance service2",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYWEiLCJleHAiOjE2NzA3Mzc1NzMsImlhdCI6MTY3MDczNzI3M30.gxKOyTDl9AupO-Jum1VOAFx8bPA15LzIjguOMFBrqv7QRIXyQVGfneQg4Nv0jwi4mp20QLbCHs9BynIEdftrbA",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8040/app2insurance/BMW/A1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8040",
+					"path": [
+						"app2insurance",
+						"BMW",
+						"A1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Brokerage service",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYWEiLCJleHAiOjE2NzI3MjY0MzcsImlhdCI6MTY3MjcyNjEzN30.cCbCZo5WyXMMHI-PW_3JnamaeW6TNKg2sZKdxUOWep0FnYEJcrVCOeyd5hMUlpbnuiY_B7lsJEmZ5f6Y8G-N6A",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8889/insurances/BMW/A1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8889",
+					"path": [
+						"insurances",
+						"BMW",
+						"A1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token authenticate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"aaa\",\"password\":\"password\"}"
+				},
+				"url": {
+					"raw": "localhost:8040/jwt/authenticate",
+					"host": [
+						"localhost"
+					],
+					"port": "8040",
+					"path": [
+						"jwt",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token Validation",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYWEiLCJleHAiOjE2NzI3MjQ1MDEsImlhdCI6MTY3MjcyNDIwMX0.pt0aPoX6mjcwg-vjOS-RKVRqewxZVyw5xp5L58h5APBhTK3RW13yHxT6EwZTkDSkyqmcWtI_z-g8WKwRkt98QA"
+					}
+				],
+				"url": {
+					"raw": "localhost:8040/jwt/verifytoken",
+					"host": [
+						"localhost"
+					],
+					"port": "8040",
+					"path": [
+						"jwt",
+						"verifytoken"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
