@@ -27,6 +27,7 @@ import io.mk.foodorder.model.PaymentStatus;
 import io.mk.foodorder.repo.CustomerRepo;
 import io.mk.foodorder.repo.OrderItemRepo;
 import io.mk.foodorder.repo.OrderRepo;
+import io.mk.foodorder.repo.PaymentRepo;
 import io.mk.foodorder.repo.SupplierRepo;
 
 @Service
@@ -37,12 +38,15 @@ public class OrderService {
 
 	@Autowired
 	private OrderRepo orderRepo;
-	
+
 	@Autowired
 	private CustomerRepo customerRepo;
 
 	@Autowired
 	private SupplierRepo supplierRepo;
+
+	@Autowired
+	private PaymentRepo paymentRepo;
 
 	@Autowired
 	private PaymentService paymentService;
@@ -60,10 +64,14 @@ public class OrderService {
 
 		System.out.println("Processing order..");
 		OrderAcknowledgement orderAck = new OrderAcknowledgement();
-		int taxPercent = 5;
 		int netAmount = orderItems.stream().map(oi -> oi.getQty() * oi.getPrice()).mapToInt(Integer::valueOf).sum();
-		int taxAmount = netAmount * taxPercent / 100;
-		int taxableAmount = netAmount + taxAmount;
+		int taxAmount = orderItems.stream()
+				.map(oi -> oi.getQty() * oi.getPrice() * oi.getItem().getItemTaxGroup().getTaxPercent() / 100)
+				.mapToInt(Integer::valueOf).sum();
+		int discAmount = orderItems.stream()
+				.map(oi -> oi.getQty() * oi.getPrice() / 100 * oi.getItem().getItemDiscountGroup().getDiscountPercent())
+				.mapToInt(Integer::valueOf).sum();
+		int taxableAmount = netAmount + taxAmount - discAmount;
 
 		Order order = new Order();
 		order.setCustomer(customer);
@@ -73,6 +81,7 @@ public class OrderService {
 		order.setDate(new Date());
 		order.setNetAmount(netAmount);
 		order.setTaxAmount(taxAmount);
+		order.setDiscAmount(discAmount);
 		order.setTotalAmount(taxableAmount);
 		order.setOrderStatus(OrderStatus.PROCESSING);
 
@@ -94,20 +103,20 @@ public class OrderService {
 
 	public PaymentAcknowledgement makePayment(Order order, PaymentRequest paymentRequest) {
 		// Making payment
-		int billAmount = order.getOrderItems().stream().map(oi -> oi.getPrice() * oi.getQty())
-				.mapToInt(Integer::valueOf).sum();
-		
-		PaymentInfo paymentResp = paymentService.makePayment(paymentRequest.getPaymentInfo(), billAmount);
+		PaymentInfo paymentResp = paymentService.makePayment(paymentRequest.getPaymentInfo(), order.getTotalAmount());
 		if (!paymentResp.getStatus().equals(PaymentStatus.PAYMENT_SUCCESS)) {
 			throw new PaymentFailedException("Payment Failed for " + order.getCustomer().getUsername());
 		}
+
+		paymentResp.setOrder(order);
+		paymentRepo.save(paymentResp);
 
 //		// Saving Payment details
 		PaymentAcknowledgement paymentAck = new PaymentAcknowledgement();
 		paymentAck.setOrderId(order.getId());
 		paymentAck.setCustomerId(order.getCustomer().getId());
 //		paymentAck.setSupplierId(order.getSuppliers().iterator().next().getId());
-		paymentAck.setBillAmount(billAmount);
+		paymentAck.setBillAmount(order.getTotalAmount());
 		paymentAck.setPaymentStatus(paymentResp.getStatus());
 		paymentAck.setTransactionId(paymentResp.getTxnId());
 		return paymentAck;

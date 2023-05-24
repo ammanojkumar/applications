@@ -18,5 +18,5 @@ public class ItemDiscountGroup {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private Float discountPercent;
+	private Integer discountPercent;
 }

@@ -51,6 +51,8 @@ public class Order {
 	private Integer netAmount;
 
 	private Integer taxAmount;
+	
+	private Integer discAmount;
 
 	private Integer totalAmount;
 

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,15 +57,18 @@ public class OrderInitService {
 	final int repeat = 1;
 
 	public void createOrders() {
-
+		Random random = new Random();
 		for (int j = 1; j <= repeat; j++)
 			for (int i = 1; i <= totalCusts; i++) {
 				final int idVal = i;
 				List<Item> items = itemRepo.findAll();
 				Set<OrderItem> orderItems = new HashSet<>();
-
-				for (Item item : items) {
-					int qty = 2;
+				int cnt = random.nextInt(items.size());
+				cnt = cnt == 0 ? 1 : cnt;
+				for (int k = 0; k < cnt; k++) {
+					Item item = items.get(k);
+					int qty = random.nextInt(4);
+					qty = qty == 0 ? 1 : qty;
 					OrderItem oi = new OrderItem();
 					oi.setItem(item);
 					oi.setQty(qty);
@@ -119,11 +123,11 @@ public class OrderInitService {
 			Item item1 = new Item(null, "Idly", 30, taxGroups[0], discGroups[0], ItemCategory.MAIN);
 			Item item2 = new Item(null, "Dosai", 40, taxGroups[0], discGroups[0], ItemCategory.MAIN);
 
-			Item item3 = new Item(null, "Soup", 15, taxGroups[1], null, ItemCategory.STARTERS);
-			Item item4 = new Item(null, "Vadai", 8, taxGroups[1], null, ItemCategory.STARTERS);
+			Item item3 = new Item(null, "Soup", 15, taxGroups[1], discGroups[2], ItemCategory.STARTERS);
+			Item item4 = new Item(null, "Vadai", 8, taxGroups[1], discGroups[2], ItemCategory.STARTERS);
 
-			Item item5 = new Item(null, "Coffee", 16, taxGroups[2], null, ItemCategory.DRINK);
-			Item item6 = new Item(null, "Tea", 12, taxGroups[2], null, ItemCategory.DRINK);
+			Item item5 = new Item(null, "Coffee", 16, taxGroups[2], discGroups[1], ItemCategory.DRINK);
+			Item item6 = new Item(null, "Tea", 12, taxGroups[2], discGroups[1], ItemCategory.DRINK);
 			itemRepo.saveAll(new ArrayList<Item>(Arrays.asList(item1, item2, item3, item4, item5, item6)));
 
 		} catch (Exception e) {
@@ -139,8 +143,8 @@ public class OrderInitService {
 				paymentRequest.setOrderId(ord.getId());
 
 				PaymentInfo paymentInfo = new PaymentInfo();
-				paymentInfo.setCardNo("1111" + cus.getId());
 				paymentRequest.setPaymentInfo(paymentInfo);
+				paymentInfo.setCardNo("1111" + cus.getId());
 				orderService.makePayment(ord, paymentRequest);
 			});
 		});

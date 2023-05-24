@@ -18,5 +18,5 @@ public class ItemTaxGroup {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private Float taxPercent;
+	private Integer taxPercent;
 }
