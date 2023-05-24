@@ -2,7 +2,12 @@ package io.mk.foodorder.entity;
 
 import javax.persistence.Embeddable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Embeddable
+@Getter
+@Setter
 public class CustomerContact {
 
 	private String phone;
@@ -14,22 +19,6 @@ public class CustomerContact {
 	public CustomerContact(String phone, String email) {
 		super();
 		this.phone = phone;
-		this.email = email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
 		this.email = email;
 	}
 

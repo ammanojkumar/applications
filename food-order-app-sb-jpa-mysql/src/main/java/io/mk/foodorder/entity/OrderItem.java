@@ -1,64 +1,38 @@
 package io.mk.foodorder.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import io.mk.foodorder.entity.item.Item;
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
-@Table(name = "OrderItem_Tbl")
+@Table(name = "ORDER_ITEM_TBL")
+@Getter
+@Setter
 public class OrderItem {
 
 	@Id
-	@GeneratedValue
-	private Integer orderItemId;
-	private Integer itemId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	@OneToOne(targetEntity = Item.class)
+	@JoinColumn(name = "itemId")
+	private Item item;
+
 	private Integer qty;
-	private Integer totalPrice;
-	@ManyToOne
+	private Integer price;
+
+	@ManyToOne(targetEntity = Order.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "orderId")
 	private Order order;
-
-	public Integer getOrderItemId() {
-		return orderItemId;
-	}
-
-	public void setOrderItemId(Integer orderItemId) {
-		this.orderItemId = orderItemId;
-	}
-
-	public Integer getItemId() {
-		return itemId;
-	}
-
-	public void setItemId(Integer itemId) {
-		this.itemId = itemId;
-	}
-
-	public Integer getQty() {
-		return qty;
-	}
-
-	public void setQty(Integer qty) {
-		this.qty = qty;
-	}
-
-	public Integer getTotalPrice() {
-		return totalPrice;
-	}
-
-	public void setTotalPrice(Integer totalPrice) {
-		this.totalPrice = totalPrice;
-	}
-
-	public Order getOrder() {
-		return order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
-	}
 
 }

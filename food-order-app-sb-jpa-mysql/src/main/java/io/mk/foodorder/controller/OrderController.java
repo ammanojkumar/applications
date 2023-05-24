@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.mk.foodorder.dto.OrderAcknowledgement;
 import io.mk.foodorder.dto.OrderRequest;
+import io.mk.foodorder.dto.PaymentAcknowledgement;
+import io.mk.foodorder.dto.PaymentRequest;
+import io.mk.foodorder.entity.Order;
 import io.mk.foodorder.service.OrderService;
 
 @RestController
@@ -18,5 +21,11 @@ public class OrderController {
 	@PostMapping("order")
 	public OrderAcknowledgement createOrder(@RequestBody OrderRequest orderRequest) {
 		return orderService.createOrder(orderRequest);
+	}
+
+	@PostMapping("payment")
+	public PaymentAcknowledgement makePayment(@RequestBody PaymentRequest paymentRequest) {
+		Order order = orderService.getOrder(paymentRequest.getOrderId());
+		return orderService.makePayment(order, paymentRequest);
 	}
 }
